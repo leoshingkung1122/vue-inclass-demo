@@ -1,30 +1,46 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { ref } from "vue";
+// 1. ประกาศตัวแปร name มีค่าเริ่มต้นเป็น ""
+const name = ref("");
+// 2. ประกาศตัวแปร participants เป็น Array เปล่าสำหรับเก็บค่า input name
+const participants = ref([]);
+// 3. สร้างฟังก์ชันสำหรับเพิ่ม name เข้า participants ตอนที่กดปุ่ม
+const addParticipant = () => {
+// เริ่มเขียนโค้ดตรงนี้
+participants.value.push(name.value);
+};
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="assignment-container">
+    <h2>รายชื่อผู้เข้าร่วมกิจกรรม</h2>
+    <!-- 4. ใช้ v-model เพื่อเก็บค่า input -->
+    <input v-model="name" placeholder="กรอกชื่อผู้เข้าร่วม" />
+    <!-- 5. ใช้ @click เพื่อเรียกใช้ addParticipant ตอนกดปุ่ม -->
+    <button @click="addParticipant">เพิ่มชื่อ</button>
+
+    <div class="participant-list">
+      <!-- 6. เขียน v-if เพื่อแสดงข้อความ "ยังไม่มีผู้เข้าร่วม" เมื่อไม่มีสมาชิกใน participants -->
+      <p v-if="participants.length === 0">ยังไม่มีผู้เข้าร่วม</p>
+      <!-- 7. เขียน v-else เพื่อแสดง <li> ถ้ามีสมาชิกใน participants -->
+      <ul v-else>
+          <!-- 8. เขียน v-for เพื่อลูปและแสดงรายชื่อทั้งหมดใน participants -->
+        <li v-for="(participant,index) in participants" :key="index">{{ index + 1 }}. {{ participant }}
+        </li>
+      </ul>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.assignment-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9f9f9;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+button {
+  margin-left: 8px;
 }
 </style>
